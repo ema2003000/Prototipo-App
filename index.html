@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grammable - Spesa intelligente</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">Gr</div>
+        <div>
+          <p class="eyebrow">Spesa quotidiana personalizzata</p>
+          <h1>Grammable</h1>
+          <p class="brand-copy">Porzioni precise, lista chiara, supermercati vicini.</p>
+        </div>
+      </div>
+      <div class="account-area">
+        <button id="loginButton" class="ghost-button" type="button">Accedi</button>
+        <div id="accountMenu" class="account-menu" hidden>
+          <button id="avatarButton" class="avatar-button" type="button" aria-label="Apri profilo">
+            <span id="avatarInitials">GG</span>
+            <img id="avatarImage" alt="" hidden />
+          </button>
+          <div id="accountDropdown" class="account-dropdown" hidden>
+            <div class="account-summary">
+              <div class="mini-avatar">
+                <span id="dropdownInitials">GG</span>
+                <img id="dropdownAvatarImage" alt="" hidden />
+              </div>
+              <div>
+                <strong id="accountName">Utente</strong>
+                <p id="accountEmail">email</p>
+              </div>
+            </div>
+            <button id="settingsButton" class="menu-button" type="button">Impostazioni</button>
+            <button id="logoutButton" class="menu-button danger" type="button">Log-out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="panel diet-panel" aria-labelledby="dietTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Dieta</p>
+            <h2 id="dietTitle">Carica piano alimentare</h2>
+          </div>
+          <span id="profileStatus" class="status-pill">Profilo base</span>
+        </div>
+        <div class="diet-upload">
+          <div class="diet-picker">
+            <input id="dietFile" type="file" accept=".txt,.md,.csv,.json" />
+            <button id="dietFileButton" class="upload-button" type="button">
+              <span id="uploadProgress" class="upload-progress" aria-hidden="true"></span>
+              <span id="uploadLabel" class="upload-label">Upload</span>
+            </button>
+            <span id="dietFileName">Nessun file selezionato</span>
+          </div>
+          <p id="dietSummary">Puoi importare un file con alimenti, pasti o note dietetiche.</p>
+        </div>
+        <button id="openProfileSettings" class="ghost-button wide-action" type="button">Completa profilo nutrizionale</button>
+      </section>
+
+      <section class="panel shopping-panel" aria-labelledby="shoppingTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Lista</p>
+            <h2 id="shoppingTitle">Cosa devi comprare</h2>
+          </div>
+          <button id="clearButton" class="icon-button" type="button" title="Svuota lista">x</button>
+        </div>
+
+        <form id="addItemForm" class="ingredient-search">
+          <label class="search-field">
+            Cerca ingrediente
+            <input id="ingredientSearch" type="search" placeholder="Scrivi es. pasta, pollo, mele..." autocomplete="off" />
+          </label>
+          <label>
+            Pasto
+            <select id="mealSelect" aria-label="Pasto">
+              <option value="breakfast">Colazione</option>
+              <option value="lunch" selected>Pranzo</option>
+              <option value="dinner">Cena</option>
+              <option value="snack">Spuntino</option>
+            </select>
+          </label>
+          <label>
+            Grammi
+            <input id="gramsInput" type="number" min="25" max="5000" step="5" placeholder="Auto" />
+          </label>
+          <button type="submit">Aggiungi</button>
+        </form>
+
+        <div id="shoppingList" class="shopping-list"></div>
+      </section>
+
+      <section class="panel map-panel" aria-labelledby="marketTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Vicino a te</p>
+            <h2 id="marketTitle">Supermercati nei paraggi</h2>
+          </div>
+          <button id="locationButton" class="ghost-button" type="button">Usa posizione</button>
+        </div>
+        <div class="market-controls">
+          <p id="locationStatus" class="muted">La posizione resta nel browser e serve solo a ordinare i risultati demo.</p>
+          <label>
+            Ordina per
+            <select id="marketSort">
+              <option value="recommended">Consigliato</option>
+              <option value="price">Prezzo piu basso</option>
+              <option value="availability">Disponibilita</option>
+              <option value="distance">Distanza</option>
+            </select>
+          </label>
+        </div>
+        <div id="markets" class="markets"></div>
+      </section>
+
+      <section class="panel insights-panel" aria-labelledby="insightsTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Riepilogo</p>
+            <h2 id="insightsTitle">Informazioni utili</h2>
+          </div>
+        </div>
+        <div class="metrics">
+          <div>
+            <span id="caloriesMetric">0</span>
+            <p>kcal stimate</p>
+          </div>
+          <div>
+            <span id="gramsMetric">0 g</span>
+            <p>totale spesa</p>
+          </div>
+          <div>
+            <span id="priceMetric">EUR 0,00</span>
+            <p>miglior prezzo</p>
+          </div>
+        </div>
+        <div id="recommendations" class="recommendations"></div>
+      </section>
+    </main>
+
+    <dialog id="loginDialog" class="login-dialog">
+      <form method="dialog" id="loginForm">
+        <h2>Accesso demo</h2>
+        <label>
+          Email
+          <input id="email" type="email" placeholder="nome@email.it" required />
+        </label>
+        <label>
+          Password
+          <input id="password" type="password" placeholder="********" required />
+        </label>
+        <menu>
+          <button value="cancel" class="ghost-button">Annulla</button>
+          <button id="saveLogin" value="default">Salva</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="settingsDialog" class="login-dialog">
+      <form method="dialog" id="settingsForm">
+        <h2>Impostazioni utente</h2>
+        <label>
+          Nome visualizzato
+          <input id="displayName" type="text" placeholder="Il tuo nome" />
+        </label>
+        <div class="settings-grid">
+          <label>
+            Nome profilo
+            <input id="name" name="name" type="text" placeholder="Es. Maria" />
+          </label>
+          <label>
+            Sesso
+            <select id="sex" name="sex">
+              <option value="female">Donna</option>
+              <option value="male">Uomo</option>
+              <option value="other">Altro / preferisco non dirlo</option>
+            </select>
+          </label>
+          <label>
+            Eta
+            <input id="age" name="age" type="number" min="12" max="100" value="35" />
+          </label>
+          <label>
+            Peso kg
+            <input id="weight" name="weight" type="number" min="35" max="220" value="70" />
+          </label>
+          <label>
+            Altezza cm
+            <input id="height" name="height" type="number" min="130" max="230" value="170" />
+          </label>
+          <label>
+            Attivita
+            <select id="activity" name="activity">
+              <option value="1.2">Sedentaria</option>
+              <option value="1.375">Leggera</option>
+              <option value="1.55">Moderata</option>
+              <option value="1.725">Alta</option>
+            </select>
+          </label>
+          <label>
+            Obiettivo
+            <select id="goal" name="goal">
+              <option value="loss">Dimagrimento</option>
+              <option value="maintain">Mantenimento</option>
+              <option value="gain">Aumento massa</option>
+            </select>
+          </label>
+          <label>
+            Persone
+            <input id="people" name="people" type="number" min="1" max="8" value="1" />
+          </label>
+        </div>
+        <label>
+          Immagine profilo
+          <input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp" />
+        </label>
+        <label>
+          Colore avatar
+          <select id="avatarColor">
+            <option value="#1e7c57">Verde</option>
+            <option value="#276d9f">Blu</option>
+            <option value="#d96f32">Arancio</option>
+            <option value="#6f4dbf">Viola</option>
+          </select>
+        </label>
+        <menu>
+          <button value="cancel" class="ghost-button">Chiudi</button>
+          <button id="saveSettings" value="default">Salva</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
